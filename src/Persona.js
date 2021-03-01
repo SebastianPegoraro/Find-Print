@@ -8,19 +8,26 @@ export default class Persona extends Component {
 
         this.state = {
             persona: {
-                number: ''
+                number: '',
+                gender: '',
+                order: ''
             },
             renaper: {
-                name: '',
-                gender: '',
-                height: '',
-                mass: ''
+                code: '',
+                message: '',
+                person: '',
+                valid: ''
             }
         }
     }
 
     handleSubmit = (event) => {
-        axios.get(`https://swapi.dev/api/people/` + this.state.persona.number)
+        axios.get(`https://renaper.dnm.gob.ar/`,{
+            headers: {
+                apikey: '',
+                url: 'http://onboarding.renaper.prod.vusecurity.com:8080/vu-onboardingrest/information/personData'
+            }
+        })
             .then(res => {
                 this.setState({ renaper: res.data });
                 console.log(this.state.renaper);
@@ -31,8 +38,34 @@ export default class Persona extends Component {
         return (
             <React.Fragment>
 
-                <label className="form-label" htmlFor="number">N°:</label>
-                <InputText placeholder="Ingrese 1 - 82" value={this.state.persona.number} type="number" className="form-control" id="number" onChange={(e) => {
+                <label className="form-label" htmlFor="number">N° D.N.I.:</label>
+                <InputText placeholder="Ingrese D.N.I." value={this.state.persona.number} type="number" className="form-control" id="number" onChange={(e) => {
+                    let val = e.target.value;
+                    this.setState(prevState => {
+                        let persona = Object.assign({}, prevState.persona);
+                        persona.number = parseInt(val, 10);
+                        return { persona };
+                    })
+                }
+                } />
+
+                <br />
+
+                <label className="form-label" htmlFor="gender">Genero:</label>
+                <InputText placeholder="Ingrese 'M'-Masculino 'F'-Femenino" value={this.state.persona.gender} type="text" className="form-control" id="gender" onChange={(e) => {
+                    let val = e.target.value;
+                    this.setState(prevState => {
+                        let persona = Object.assign({}, prevState.persona);
+                        persona.number = parseInt(val, 10);
+                        return { persona };
+                    })
+                }
+                } />
+
+                <br />
+
+                <label className="form-label" htmlFor="number">N° Orden:</label>
+                <InputText placeholder="Ingrese su numero de Orden" value={this.state.persona.order} type="number" className="form-control" id="order" onChange={(e) => {
                     let val = e.target.value;
                     this.setState(prevState => {
                         let persona = Object.assign({}, prevState.persona);
@@ -48,17 +81,17 @@ export default class Persona extends Component {
 
                 <br />
 
-                <label htmlFor="name" className="form-label">Nombre:</label>
-                <input type="text" className="form-control-plaintext" id="name" value={this.state.renaper.name} readOnly />
+                <label htmlFor="name" className="form-label">Código:</label>
+                <input type="text" className="form-control-plaintext" id="name" value={this.state.renaper.code} readOnly />
 
-                <label htmlFor="gender" className="form-label">Genero:</label>
-                <input type="text" className="form-control-plaintext" id="gender" value={this.state.renaper.gender} readOnly  />
+                <label htmlFor="gender" className="form-label">Mensaje:</label>
+                <input type="text" className="form-control-plaintext" id="gender" value={this.state.renaper.message} readOnly  />
 
-                <label htmlFor="height" className="form-label">Altura:</label>
-                <input type="text" className="form-control-plaintext" id="height" value={this.state.renaper.height} readOnly  />
+                <label htmlFor="height" className="form-label">Persona:</label>
+                <input type="text" className="form-control-plaintext" id="height" value={this.state.renaper.person} readOnly  />
 
-                <label htmlFor="mass" className="form-label">Peso:</label>
-                <input type="text" className="form-control-plaintext" id="mass" value={this.state.renaper.mass} readOnly />
+                <label htmlFor="mass" className="form-label">Valido:</label>
+                <input type="text" className="form-control-plaintext" id="mass" value={this.state.renaper.valid} readOnly />
 
             </React.Fragment>
         )
